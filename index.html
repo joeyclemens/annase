@@ -1,0 +1,2268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annase's Quote Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Pixelify+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: a teal 90s desktop with stacked beveled windows (code, setup, preview, test site, help) and a taskbar that doubles as navigation. */
+:root {
+  --desk: #067373;
+  --desk-dot: rgba(0, 0, 0, 0.08);
+  --win: #c8c8c8;
+  --hi: #ffffff;
+  --lo: #7a7a7a;
+  --dark: #2b2b2b;
+  --ink: #141414;
+  --paper: #ffffff;
+  --title-a: #14147a;
+  --title-b: #2a8ae0;
+  --pink: #ff5fa2;
+  --yellow: #ffd23f;
+  --term-bg: #101820;
+  --term-fg: #b7f7c8;
+  --f-display: 'Silkscreen', 'Courier New', monospace;
+  --f-body: 'Pixelify Sans', 'Trebuchet MS', sans-serif;
+  --f-code: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body { margin: 0; }
+img { max-width: 100%; }
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--desk);
+  background-image: conic-gradient(#0000 25%, var(--desk-dot) 0 50%, #0000 0 75%, var(--desk-dot) 0);
+  background-size: 4px 4px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.5;
+  padding-inline: 16px;
+  padding-block: 32px 88px;
+}
+.wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+
+/* Hero */
+.hero { display: flex; flex-direction: column; gap: 14px; padding-block: 8px 4px; min-width: 0; }
+.hero h1 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(30px, 8.5vw, 58px);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 3px 3px 0 var(--pink), 6px 6px 0 var(--title-a);
+  text-wrap: balance;
+}
+.cursor { display: inline-block; width: 0.5em; height: 0.9em; background: var(--yellow); margin-left: 0.15em; vertical-align: -0.08em; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.hero p { color: #fff; max-width: 52ch; text-shadow: 1px 1px 0 #003a3a; font-size: 19px; }
+.sticker {
+  align-self: flex-start;
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 6px 10px;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: rotate(-2deg);
+}
+
+/* Windows */
+.win {
+  background: var(--win);
+  border: 2px solid;
+  border-color: var(--hi) var(--dark) var(--dark) var(--hi);
+  box-shadow: inset -1px -1px 0 var(--lo), inset 1px 1px 0 #e8e8e8, 6px 6px 0 rgba(0, 0, 0, 0.35);
+  padding: 3px;
+  min-width: 0;
+  scroll-margin-top: 16px;
+}
+.title {
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(90deg, var(--title-a), var(--title-b));
+  color: #fff;
+  font-family: var(--f-display); font-weight: 700; font-size: 13px; letter-spacing: 0.06em;
+  padding: 5px 6px;
+}
+.title span.name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ctl { margin-left: auto; display: flex; gap: 2px; flex: none; }
+.ctl i {
+  width: 18px; height: 16px; background: var(--win); color: var(--ink);
+  border: 1px solid; border-color: var(--hi) var(--dark) var(--dark) var(--hi);
+  font: 700 11px/14px var(--f-display); text-align: center; font-style: normal;
+}
+.body { padding: 16px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.panel {
+  background: var(--paper);
+  border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+  box-shadow: inset 1px 1px 0 var(--dark);
+  padding: 16px;
+  min-width: 0;
+}
+.panel p + p { margin-top: 10px; }
+h2 { font-family: var(--f-display); font-size: 15px; letter-spacing: 0.05em; margin-bottom: 8px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--f-display); font-weight: 700; font-size: 13px; letter-spacing: 0.05em;
+  color: var(--ink); text-decoration: none; background: var(--win);
+  padding: 10px 16px; cursor: pointer;
+  border: 2px solid; border-color: var(--hi) var(--dark) var(--dark) var(--hi);
+  box-shadow: inset -1px -1px 0 var(--lo);
+}
+.btn:active { border-color: var(--dark) var(--hi) var(--hi) var(--dark); box-shadow: inset 1px 1px 0 var(--lo); padding: 11px 15px 9px 17px; }
+.btn.primary { background: var(--yellow); font-size: 14px; padding-block: 12px; }
+.btn:focus-visible, .field:focus-visible, summary:focus-visible, textarea:focus-visible { outline: 2px dotted var(--ink); outline-offset: 2px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.msg { font-size: 16px; min-height: 1.5em; }
+
+/* Fields */
+.fieldrow { display: flex; flex-direction: column; gap: 6px; }
+.fieldrow label { font-family: var(--f-display); font-size: 12px; letter-spacing: 0.06em; font-weight: 700; }
+.field {
+  width: 100%; font-family: var(--f-code); font-size: 15px; color: var(--ink); background: var(--paper);
+  padding: 10px 12px; border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+  box-shadow: inset 1px 1px 0 var(--dark);
+}
+.hint { font-size: 15px; color: #3a3a3a; }
+
+/* Code terminal */
+.term {
+  width: 100%; height: 340px; resize: vertical; white-space: pre; overflow: auto; tab-size: 2;
+  background: var(--term-bg); color: var(--term-fg);
+  font-family: var(--f-code); font-size: 12.5px; line-height: 1.55;
+  padding: 12px;
+  border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+}
+.statusbar { display: flex; flex-wrap: wrap; gap: 4px; font-size: 14px; }
+.statusbar span {
+  padding: 2px 8px; flex: 1 1 auto;
+  border: 1px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+}
+
+/* Steps */
+ol.steps { list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 16px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; align-items: start; }
+ol.steps li::before {
+  content: counter(s);
+  display: grid; place-items: center; width: 36px; height: 36px;
+  background: var(--pink); color: #fff; font-family: var(--f-display); font-weight: 700; font-size: 16px;
+  border: 2px solid; border-color: var(--hi) var(--dark) var(--dark) var(--hi);
+}
+ol.steps strong { font-weight: 600; }
+code {
+  font-family: var(--f-code); font-size: 0.82em; background: #ececec; padding: 1px 6px;
+  border: 1px solid #c4c4c4; overflow-wrap: anywhere;
+}
+.tag { font-family: var(--f-display); font-size: 11px; font-weight: 700; background: var(--yellow); padding: 2px 6px; border: 1px solid var(--ink); letter-spacing: 0.06em; }
+
+/* Preview */
+.frame {
+  width: 100%; height: 720px; display: block; background: #ece9f6;
+  border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+}
+
+/* Fake browser */
+.addr { display: flex; gap: 8px; align-items: center; }
+.addr .field { flex: 1; min-width: 0; font-size: 13px; overflow-wrap: anywhere; padding-block: 8px; }
+.browserbody { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+
+/* Help */
+details { border-top: 2px solid var(--lo); padding-block: 10px; }
+details:first-of-type { border-top: 0; padding-top: 0; }
+summary { cursor: pointer; font-weight: 600; }
+details p { margin-top: 8px; }
+
+footer.sign { color: #fff; text-shadow: 1px 1px 0 #003a3a; font-size: 15px; text-align: center; }
+
+/* Taskbar */
+.taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--win);
+  border-top: 2px solid var(--hi);
+  padding: 4px 8px calc(4px + env(safe-area-inset-bottom, 0px));
+}
+.taskbar .btn { padding: 6px 12px; font-size: 12px; }
+.taskbar .start { font-size: 13px; }
+.flag { display: grid; grid-template-columns: 7px 7px; gap: 1px; }
+.flag b { width: 7px; height: 7px; display: block; }
+.flag b:nth-child(1) { background: #e2402a; } .flag b:nth-child(2) { background: #3fb34f; }
+.flag b:nth-child(3) { background: #2a8ae0; } .flag b:nth-child(4) { background: var(--yellow); }
+.sep { width: 2px; align-self: stretch; border-left: 1px solid var(--lo); border-right: 1px solid var(--hi); }
+.clock {
+  margin-left: auto; font-size: 14px; padding: 3px 10px;
+  border: 1px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+}
+
+
+.seg { display: flex; gap: 6px; }
+.btn[aria-pressed="true"] { background: var(--yellow); border-color: var(--dark) var(--hi) var(--hi) var(--dark); box-shadow: inset 1px 1px 0 var(--lo); }
+.packgroup { display: flex; flex-direction: column; gap: 10px; }
+.packgroup h3 { font-family: var(--f-display); font-size: 12px; letter-spacing: 0.08em; }
+.pack { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.pack li { min-width: 0; }
+.pack figure { margin: 0; }
+.pack .shot {
+  height: 130px; display: grid; place-items: center; padding: 8px; background: var(--paper);
+  border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+  box-shadow: inset 1px 1px 0 var(--dark);
+}
+.pack img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.pack figcaption { font-size: 14px; line-height: 1.3; margin-top: 6px; }
+
+.pack .dl { width: 100%; margin-top: 8px; padding: 6px 8px; font-size: 11px; }
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .body { padding: 12px; }
+  .panel { padding: 12px; }
+  .clock { display: none; }
+  .taskbar { gap: 4px; padding-inline: 6px; }
+  .taskbar .btn { padding: 6px 8px; font-size: 11px; }
+  .frame { height: 640px; }
+  .term { height: 280px; }
+  ol.steps li { grid-template-columns: 30px minmax(0, 1fr); gap: 10px; }
+  ol.steps li::before { width: 30px; height: 30px; font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cursor { animation: none; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap" id="top">
+
+  <header class="hero">
+    <span class="sticker">YOUR FORM IS READY</span>
+    <h1>Hey Annase!<span class="cursor" aria-hidden="true"></span></h1>
+    <p>Your quote form is built and waiting. Below you will find the code to copy, how to add it to your Wix site, and a working copy you can click through first.</p>
+  </header>
+
+  <section class="win" id="code" aria-labelledby="t-code">
+    <div class="title"><span class="name" id="t-code">1_grab_the_code.html</span><span class="ctl" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="body">
+      <div class="panel">
+        <p>This is the whole form in one piece. It asks what the project is, how big, and where, then reveals a price estimate and collects contact details. All the little house pictures are built in, so there is nothing to upload to Wix. The same pictures are also in the picture pack below if you want them elsewhere.</p>
+      </div>
+
+      <div class="fieldrow">
+        <label for="emailIn">WHERE SHOULD QUOTE REQUESTS GO?</label>
+        <input class="field" id="emailIn" type="email" inputmode="email" autocomplete="email" placeholder="you@yourbusiness.com">
+        <span class="hint" id="emailHint">Type your email and it gets written into the code below. Until you do, the code holds a placeholder and the form has nowhere to send requests.</span>
+      </div>
+
+      <textarea class="term" id="code-view" readonly spellcheck="false" aria-label="Form code"></textarea>
+
+      <div class="actions">
+        <button class="btn primary" id="copyBtn" type="button">Copy the code</button>
+        <span class="msg" id="copyMsg" role="status" aria-live="polite"></span>
+      </div>
+
+      <div class="statusbar">
+        <span>1,820 lines</span>
+        <span>HTML + CSS + JavaScript</span>
+        <span>Pictures included</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="win" id="wix" aria-labelledby="t-wix">
+    <div class="title"><span class="name" id="t-wix">2_add_to_wix.exe</span><span class="ctl" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="body">
+      <div class="panel">
+        <ol class="steps">
+          <li><div><strong>Open your site in the Wix Editor</strong> and go to the page where the form should live.</div></li>
+          <li><div><strong>Add an HTML box.</strong> Click <code>Add Elements</code> (the plus on the left), choose <code>Embed Code</code>, then <code>Embed HTML</code>. In Wix Studio it is <code>Add Elements</code>, <code>Embed &amp; Social</code>, <code>HTML Embed</code>.</div></li>
+          <li><div><strong>Paste the code.</strong> Click the new box, choose <code>Enter Code</code>, pick the <code>Code</code> option, paste what you copied in step 1 and press <code>Update</code>.</div></li>
+          <li><div><strong>Give it room.</strong> Stretch the box to the full width of the page and about 1000 px tall. The form changes height as people move through it, so if you see a scrollbar inside the box, make it taller.</div></li>
+          <li><div><strong>Preview, then publish.</strong> Click through the form in Preview and publish when you are happy.</div></li>
+          <li><div><strong>Send one test request.</strong> Fill the form in on your live page and submit it. The first time, the form service emails you a confirmation link. Click it, and every request after that arrives normally. Check spam if it does not show up.</div></li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h2>Change the prices <span class="tag">OPTIONAL</span></h2>
+        <p>Near the top of the code's script section there is a list called <code>PRICES</code>. Each project type has a price per square metre for <code>london</code> and for <code>outside</code>. Change the numbers, copy the code again and paste it over the old version in the Wix box.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="win" id="preview" aria-labelledby="t-prev">
+    <div class="title"><span class="name" id="t-prev">3_try_it_out.exe</span><span class="ctl" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="body">
+      <div class="panel">
+        <p>This is the real form, running right here. Sending is switched off in this copy, so click through freely and nothing gets emailed.</p>
+      </div>
+      <iframe class="frame" id="frame" title="Working preview of the quote form" sandbox="allow-scripts"></iframe>
+      <div class="actions">
+        <button class="btn" id="restartBtn" type="button">Start over</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="win" id="pictures" aria-labelledby="t-pics">
+    <div class="title"><span class="name" id="t-pics">4_picture_pack.exe</span><span class="ctl" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="body">
+      <div class="panel">
+        <p>The same house pictures as separate files, full size, in case you want them somewhere else on your site. Press Save under any picture, or take them all in one go. PNG works everywhere. SVG stays sharp at any size.</p>
+      </div>
+      <div class="actions">
+        <div class="seg" role="group" aria-label="File type">
+          <button class="btn" type="button" id="fmtPng" aria-pressed="true">PNG</button>
+          <button class="btn" type="button" id="fmtSvg" aria-pressed="false">SVG</button>
+        </div>
+        <a class="btn primary" href="annase-pictures.zip" download>Download all (zip)</a>
+      </div>
+      <div class="packgroup"><h3>THE PROJECT</h3><ul class="pack"><li><figure><div class="shot"><img data-pic="pictures/%s/b1-one-storey-rear-extension" src="pictures/png/b1-one-storey-rear-extension.png" alt="1 Storey Rear Extension" loading="lazy"></div><figcaption>1 Storey Rear Extension</figcaption><a class="btn dl" data-dl="pictures/%s/b1-one-storey-rear-extension" href="pictures/png/b1-one-storey-rear-extension.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b2-two-storey-rear-extension" src="pictures/png/b2-two-storey-rear-extension.png" alt="2 Storey Rear Extension" loading="lazy"></div><figcaption>2 Storey Rear Extension</figcaption><a class="btn dl" data-dl="pictures/%s/b2-two-storey-rear-extension" href="pictures/png/b2-two-storey-rear-extension.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b3-one-storey-side-extension" src="pictures/png/b3-one-storey-side-extension.png" alt="1 Storey Side Extension" loading="lazy"></div><figcaption>1 Storey Side Extension</figcaption><a class="btn dl" data-dl="pictures/%s/b3-one-storey-side-extension" href="pictures/png/b3-one-storey-side-extension.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b4-two-storey-side-extension" src="pictures/png/b4-two-storey-side-extension.png" alt="2 Storey Side Extension" loading="lazy"></div><figcaption>2 Storey Side Extension</figcaption><a class="btn dl" data-dl="pictures/%s/b4-two-storey-side-extension" href="pictures/png/b4-two-storey-side-extension.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b5-wrap-around-extension" src="pictures/png/b5-wrap-around-extension.png" alt="Wrap Around Extension" loading="lazy"></div><figcaption>Wrap Around Extension</figcaption><a class="btn dl" data-dl="pictures/%s/b5-wrap-around-extension" href="pictures/png/b5-wrap-around-extension.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b6-porch" src="pictures/png/b6-porch.png" alt="Porch" loading="lazy"></div><figcaption>Porch</figcaption><a class="btn dl" data-dl="pictures/%s/b6-porch" href="pictures/png/b6-porch.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b7-loft-conversion-with-dormer" src="pictures/png/b7-loft-conversion-with-dormer.png" alt="Loft Conversion with Dormer" loading="lazy"></div><figcaption>Loft Conversion with Dormer</figcaption><a class="btn dl" data-dl="pictures/%s/b7-loft-conversion-with-dormer" href="pictures/png/b7-loft-conversion-with-dormer.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b8-outbuilding-garden-house" src="pictures/png/b8-outbuilding-garden-house.png" alt="Outbuilding / Garden House" loading="lazy"></div><figcaption>Outbuilding / Garden House</figcaption><a class="btn dl" data-dl="pictures/%s/b8-outbuilding-garden-house" href="pictures/png/b8-outbuilding-garden-house.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/b9-new-build" src="pictures/png/b9-new-build.png" alt="New Build" loading="lazy"></div><figcaption>New Build</figcaption><a class="btn dl" data-dl="pictures/%s/b9-new-build" href="pictures/png/b9-new-build.png" download>Save PNG</a></figure></li></ul></div><div class="packgroup"><h3>THE PROPERTY</h3><ul class="pack"><li><figure><div class="shot"><img data-pic="pictures/%s/a1-detached" src="pictures/png/a1-detached.png" alt="Detached" loading="lazy"></div><figcaption>Detached</figcaption><a class="btn dl" data-dl="pictures/%s/a1-detached" href="pictures/png/a1-detached.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/a2-semi-detached" src="pictures/png/a2-semi-detached.png" alt="Semi-detached" loading="lazy"></div><figcaption>Semi-detached</figcaption><a class="btn dl" data-dl="pictures/%s/a2-semi-detached" href="pictures/png/a2-semi-detached.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/a3-terrace" src="pictures/png/a3-terrace.png" alt="Terrace" loading="lazy"></div><figcaption>Terrace</figcaption><a class="btn dl" data-dl="pictures/%s/a3-terrace" href="pictures/png/a3-terrace.png" download>Save PNG</a></figure></li><li><figure><div class="shot"><img data-pic="pictures/%s/a4-town-house" src="pictures/png/a4-town-house.png" alt="Town House" loading="lazy"></div><figcaption>Town House</figcaption><a class="btn dl" data-dl="pictures/%s/a4-town-house" href="pictures/png/a4-town-house.png" download>Save PNG</a></figure></li></ul></div>
+    </div>
+  </section>
+
+  <section class="win" aria-labelledby="t-site">
+    <div class="title"><span class="name" id="t-site">where_it_was_built.url</span><span class="ctl" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="body">
+      <div class="addr">
+        <div class="field" aria-label="Test site address">https://joeyclemens87.wixsite.com/archikei_sandbox</div>
+      </div>
+      <div class="panel browserbody">
+        <p>This is the test site the form was made on. Wix does not allow its pages to be shown inside other pages, so it opens in a new tab instead. It is a handy place to see how the form looks in Wix.</p>
+        <a class="btn primary" href="https://joeyclemens87.wixsite.com/archikei_sandbox" target="_blank" rel="noopener noreferrer">Open the test site ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="win" id="help" aria-labelledby="t-help">
+    <div class="title"><span class="name" id="t-help">help.txt</span><span class="ctl" aria-hidden="true"><i>_</i><i>□</i><i>×</i></span></div>
+    <div class="body">
+      <div class="panel">
+        <details>
+          <summary>The form is cut off or has its own scrollbar</summary>
+          <p>Make the Wix box taller. Select it in the editor and drag the bottom edge down, or set the height in the box's size settings.</p>
+        </details>
+        <details>
+          <summary>No emails are arriving</summary>
+          <p>The first request triggers a confirmation email from the form service. Open it and click the link. Look in spam too. After that, send another test.</p>
+        </details>
+        <details>
+          <summary>Some visitors see "Estimate not available"</summary>
+          <p>That is intended. The estimate only appears when someone enters the size of their project. Everyone else is told you will arrange a site survey.</p>
+        </details>
+        <details>
+          <summary>I want to change the purple</summary>
+          <p>The main colour is <code>#7c3aed</code>, and its darker shade is <code>#6d28d9</code>. Replace those in the code with your own colours and paste it into Wix again.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="sign">Made for Annase</footer>
+</div>
+
+<nav class="taskbar" aria-label="Jump to a section">
+  <a class="btn start" href="#top"><span class="flag" aria-hidden="true"><b></b><b></b><b></b><b></b></span>Start</a>
+  <span class="sep" aria-hidden="true"></span>
+  <a class="btn" href="#code">Code</a>
+  <a class="btn" href="#wix">Wix</a>
+  <a class="btn" href="#preview">Preview</a>
+  <a class="btn" href="#pictures">Pictures</a>
+  <span class="clock" id="clock" aria-hidden="true"></span>
+</nav>
+
+<textarea id="src" hidden>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;style&gt;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  background: transparent;
+}
+.quote-form { 
+  max-width: 700px; 
+  margin: 0 auto; 
+  padding: 15px; 
+}
+.form-step { 
+  display: none; 
+  animation: fadeIn 0.3s ease-in; 
+}
+.form-step.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.form-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: none;
+  animation: fadeIn 0.3s ease-in;
+}
+.form-section.active { display: block; }
+.form-section.collapsed {
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.form-section.collapsed:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.form-section.collapsed .option-card {
+  display: none;
+}
+.form-section.collapsed .option-card.selected {
+  display: flex;
+  margin-bottom: 6px;
+  cursor: default;
+  pointer-events: none;
+  padding: 12px 16px;
+}
+.form-section.collapsed .submit-btn {
+  display: none !important;
+}
+.collapsed-summary {
+  display: none;
+  font-size: 13px;
+  color: #7c3aed;
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.collapsed-summary:hover {
+  color: #6d28d9;
+  text-decoration: underline;
+}
+.form-section.collapsed .collapsed-summary {
+  display: block;
+}
+.form-section.collapsed .form-title {
+  cursor: pointer;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+.form-section.collapsed .form-title:hover {
+  color: #7c3aed;
+}
+.form-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 16px;
+  text-align: center;
+  line-height: 1.3;
+}
+/* Compact option cards */
+.option-card {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: white;
+  min-height: 60px;
+}
+.option-card:hover {
+  border-color: #7c3aed;
+  background: #faf5ff;
+  transform: translateY(-1px);
+}
+.option-card.selected { 
+  border-color: #7c3aed; 
+  background: #f5f3ff; 
+}
+.option-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin-right: 14px;
+  flex-shrink: 0;
+}
+.option-label {
+  font-size: 15px;
+  color: #2d3748;
+  font-weight: 500;
+  line-height: 1.3;
+}
+/* Compact bedroom options */
+.bedroom-options { 
+  display: flex; 
+  gap: 10px; 
+  justify-content: center; 
+  flex-wrap: wrap; 
+  margin: 10px 0;
+}
+.bedroom-btn {
+  min-width: 70px; 
+  padding: 14px 20px;
+  border: 2px solid #e2e8f0; 
+  border-radius: 8px;
+  background: white; 
+  cursor: pointer;
+  font-size: 16px; 
+  font-weight: 600;
+  color: #2d3748;
+  transition: all 0.15s ease;
+}
+.bedroom-btn:hover {
+  border-color: #7c3aed;
+  background: #faf5ff;
+  transform: translateY(-1px);
+}
+.bedroom-btn.selected { 
+  background: #7c3aed; 
+  color: white; 
+  border-color: #7c3aed; 
+}
+/* Compact input layout */
+.input-row { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 12px; 
+  margin-bottom: 12px; 
+}
+.input-field, .select-field {
+  width: 100%; 
+  padding: 12px 14px;
+  border: 2px solid #e2e8f0; 
+  border-radius: 8px;
+  font-size: 15px;
+}
+.input-field:focus, .select-field:focus {
+  outline: none;
+  border-color: #7c3aed;
+}
+/* Compact size inputs */
+.size-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+.size-input {
+  width: 90px;
+  padding: 10px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 15px;
+}
+.size-input:focus {
+  outline: none;
+  border-color: #7c3aed;
+}
+.size-label {
+  font-size: 13px;
+  color: #4a5568;
+  text-align: center;
+  margin-top: 6px;
+}
+.size-result {
+  font-size: 16px;
+  font-weight: 600;
+  color: #7c3aed;
+  text-align: center;
+  margin-top: 12px;
+  padding: 10px;
+  background: #f5f3ff;
+  border-radius: 8px;
+  min-width: 90px;
+}
+/* Compact yes/no options */
+.yesno-options {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 15px;
+}
+.yesno-btn {
+  min-width: 110px;
+  padding: 14px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2d3748;
+  transition: all 0.15s ease;
+}
+.yesno-btn:hover {
+  border-color: #7c3aed;
+  background: #faf5ff;
+  transform: translateY(-1px);
+}
+.yesno-btn.selected { 
+  background: #7c3aed; 
+  color: white; 
+  border-color: #7c3aed; 
+}
+/* Compact buttons */
+.submit-btn, .back-btn, .reveal-btn {
+  width: 100%; 
+  padding: 14px; 
+  border-radius: 8px;
+  font-size: 15px; 
+  font-weight: 600; 
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.submit-btn, .reveal-btn { 
+  background: #7c3aed; 
+  color: white; 
+  border: none; 
+  margin-top: 20px;
+}
+.submit-btn:hover, .reveal-btn:hover {
+  background: #6d28d9;
+  transform: translateY(-1px);
+}
+.submit-btn:disabled, .reveal-btn:disabled { 
+  background: #cbd5e0; 
+  cursor: not-allowed; 
+  transform: none;
+}
+.back-btn {
+  background: white; 
+  color: #7c3aed;
+  border: 2px solid #7c3aed; 
+  margin-top: 10px;
+}
+.back-btn:hover {
+  background: #faf5ff;
+  transform: translateY(-1px);
+}
+/* Success message */
+.success-message {
+  background: #10b981; 
+  color: white;
+  padding: 20px; 
+  border-radius: 12px; 
+  text-align: center;
+}
+.success-message h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+/* Estimate display */
+.estimate-display {
+  background: #f5f3ff;
+  border: 2px solid #7c3aed;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.no-estimate-display {
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.estimate-amount {
+  font-size: 40px;
+  font-weight: 700;
+  color: #7c3aed;
+  margin: 16px 0;
+  line-height: 1;
+}
+.no-estimate-message {
+  font-size: 20px;
+  font-weight: 600;
+  color: #d97706;
+  margin: 16px 0;
+}
+.estimate-note {
+  font-size: 13px;
+  color: #4a5568;
+  margin-top: 16px;
+  font-style: italic;
+  line-height: 1.4;
+}
+.no-estimate-note {
+  font-size: 15px;
+  color: #92400e;
+  margin-top: 16px;
+  line-height: 1.4;
+}
+/* Compact checkbox */
+.checkbox-label {
+  font-size: 14px;
+  color: #4a5568;
+  margin-bottom: 16px;
+  display: block;
+  line-height: 1.4;
+}
+.checkbox-label input {
+  margin-right: 8px;
+}
+/* Compact info box */
+.info-box {
+  background: #f0f9ff;
+  border: 1px solid #7dd3fc;
+  border-radius: 8px;
+  padding: 14px;
+  margin: 16px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #0369a1;
+  line-height: 1.4;
+}
+.reveal-container {
+  text-align: center;
+  margin: 20px 0;
+}
+.reveal-btn {
+  max-width: 280px;
+  margin: 0 auto;
+}
+/* Step indicator */
+.step-indicator {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #4a5568;
+}
+.step-indicator .step {
+  display: inline-block;
+  padding: 6px 14px;
+  margin: 0 4px;
+  border-radius: 18px;
+  background: #e2e8f0;
+  color: #4a5568;
+  font-size: 13px;
+}
+.step-indicator .step.active {
+  background: #7c3aed;
+  color: white;
+  font-weight: 600;
+}
+/* Compact time options */
+.time-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+.time-btn {
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2d3748;
+  text-align: center;
+  transition: all 0.15s ease;
+  line-height: 1.3;
+}
+.time-btn:hover {
+  border-color: #7c3aed;
+  background: #faf5ff;
+  transform: translateY(-1px);
+}
+.time-btn.selected { 
+  background: #7c3aed; 
+  color: white; 
+  border-color: #7c3aed; 
+}
+.optional-note {
+  font-size: 12px;
+  color: #718096;
+  font-style: italic;
+  margin-top: 4px;
+  text-align: center;
+}
+/* Grid layout for property type sections */
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.property-grid .option-card {
+  flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  height: 100%;
+  margin: 0;
+}
+.property-grid .option-icon {
+  margin-right: 0;
+  margin-bottom: 8px;
+}
+.property-grid .option-label {
+  font-size: 14px;
+  line-height: 1.2;
+}
+/* Region grid */
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.region-grid .option-card {
+  flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  height: 100%;
+  margin: 0;
+}
+.region-grid .option-icon {
+  display: none;
+}
+.region-grid .option-label {
+  font-size: 14px;
+  line-height: 1.2;
+}
+/* Property description grid */
+.description-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.description-grid .option-card {
+  flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  height: 100%;
+  margin: 0;
+}
+.description-grid .option-icon {
+  display: none;
+}
+.description-grid .option-label {
+  font-size: 14px;
+  line-height: 1.2;
+}
+/* Ownership and timeline grid */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.action-grid .option-card {
+  flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  height: 100%;
+  margin: 0;
+}
+.action-grid .option-icon {
+  display: none;
+}
+.action-grid .option-label {
+  font-size: 14px;
+  line-height: 1.2;
+}
+/* Extension type grid */
+.extension-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.extension-grid .option-card {
+  flex-direction: column;
+  text-align: center;
+  padding: 12px;
+  height: 100%;
+  margin: 0;
+}
+.extension-grid .option-icon {
+  margin-right: 0;
+  margin-bottom: 8px;
+}
+.extension-grid .option-label {
+  font-size: 14px;
+  line-height: 1.2;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .quote-form { 
+    padding: 10px; 
+    max-width: 100%;
+  }
+  .form-section {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .form-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .property-grid,
+  .region-grid,
+  .description-grid,
+  .action-grid,
+  .extension-grid {
+    grid-template-columns: 1fr;
+  }
+  .input-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .yesno-options {
+    flex-direction: column;
+    align-items: center;
+  }
+  .yesno-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  .size-inputs {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .size-input {
+    width: 100%;
+    max-width: 120px;
+  }
+  .time-options {
+    grid-template-columns: 1fr;
+  }
+  .estimate-amount {
+    font-size: 32px;
+  }
+}
+&lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;div class="quote-form"&gt;
+
+&lt;!-- STEP 1: PROJECT TYPE --&gt;
+&lt;div class="form-step active" id="step1"&gt;
+  &lt;div class="step-indicator"&gt;
+    &lt;span class="step active"&gt;1. Project Type&lt;/span&gt;
+    &lt;span class="step"&gt;2. About Property&lt;/span&gt;
+    &lt;span class="step"&gt;3. Contact &amp; Estimate&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- Property Type Section - GRID LAYOUT --&gt;
+  &lt;div class="form-section active" id="propertySection"&gt;
+    &lt;h2 class="form-title" onclick="expandSection('propertySection')"&gt;What property are you extending?&lt;/h2&gt;
+    &lt;div class="property-grid"&gt;
+      &lt;div class="option-card" onclick="selectProperty(this, 'Extension')"&gt;
+        &lt;img class="option-icon" data-icon="b1" alt=""&gt;
+        &lt;span class="option-label"&gt;Extension&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectProperty(this, 'Loft Conversion')"&gt;
+        &lt;img class="option-icon" data-icon="b7" alt=""&gt;
+        &lt;span class="option-label"&gt;Loft Conversion&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectProperty(this, 'Garage Conversion')"&gt;
+        &lt;span class="option-label"&gt;Garage Conversion&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectProperty(this, 'Outbuilding / Garden House / Annex')"&gt;
+        &lt;img class="option-icon" data-icon="b8" alt=""&gt;
+        &lt;span class="option-label"&gt;Outbuilding / Garden House / Annex&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectProperty(this, 'Porch')"&gt;
+        &lt;img class="option-icon" data-icon="b6" alt=""&gt;
+        &lt;span class="option-label"&gt;Porch&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectProperty(this, 'Conservatory')"&gt;
+        &lt;span class="option-label"&gt;Conservatory&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectProperty(this, 'New Build')"&gt;
+        &lt;img class="option-icon" data-icon="b9" alt=""&gt;
+        &lt;span class="option-label"&gt;New Build&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectProperty(this, 'Other')"&gt;
+        &lt;span class="option-label"&gt;Other&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="collapsed-summary" onclick="expandSection('propertySection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Extension Type Section - GRID LAYOUT --&gt;
+  &lt;div class="form-section" id="extensionTypeSection"&gt;
+    &lt;h2 class="form-title" onclick="expandSection('extensionTypeSection')"&gt;What type of extension?&lt;/h2&gt;
+    &lt;div id="extensionOptions" style="display: none;"&gt;
+      &lt;div class="extension-grid"&gt;
+        &lt;div class="option-card" onclick="toggleExtension(this, 'One Storey Rear Extension', 'extension')"&gt;
+          &lt;img class="option-icon" data-icon="b1" alt=""&gt;
+          &lt;span class="option-label"&gt;One Storey Rear Extension&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Two Storey Rear Extension', 'extension')"&gt;
+          &lt;img class="option-icon" data-icon="b2" alt=""&gt;
+          &lt;span class="option-label"&gt;Two Storey Rear Extension&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'One Storey Side Extension', 'extension')"&gt;
+          &lt;img class="option-icon" data-icon="b3" alt=""&gt;
+          &lt;span class="option-label"&gt;One Storey Side Extension&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Two Storey Side Extension', 'extension')"&gt;
+          &lt;img class="option-icon" data-icon="b4" alt=""&gt;
+          &lt;span class="option-label"&gt;Two Storey Side Extension&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Wrap Around Extension', 'extension')"&gt;
+          &lt;img class="option-icon" data-icon="b5" alt=""&gt;
+          &lt;span class="option-label"&gt;Wrap Around Extension&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div id="loftOptions" style="display: none;"&gt;
+      &lt;div class="extension-grid"&gt;
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Loft with Dormer', 'loft')"&gt;
+          &lt;img class="option-icon" data-icon="b7" alt=""&gt;
+          &lt;span class="option-label"&gt;With Dormer&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Loft without Dormer', 'loft')"&gt;
+          &lt;img class="option-icon" data-icon="b7" alt=""&gt;
+          &lt;span class="option-label"&gt;Without Dormer&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div id="garageOptions" style="display: none;"&gt;
+      &lt;div class="extension-grid"&gt;
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Attached Garage - Single', 'garage')"&gt;
+          &lt;span class="option-label"&gt;Attached Garage - Single&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Attached Garage - Double', 'garage')"&gt;
+          &lt;span class="option-label"&gt;Attached Garage - Double&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Detached Garage - Single', 'garage')"&gt;
+          &lt;span class="option-label"&gt;Detached Garage - Single&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'Detached Garage - Double', 'garage')"&gt;
+          &lt;span class="option-label"&gt;Detached Garage - Double&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div id="outbuildingOptions" style="display: none;"&gt;
+      &lt;div class="extension-grid"&gt;
+        &lt;div class="option-card" onclick="toggleExtension(this, 'For leisure (i.e. gym room, play room, home office)', 'outbuilding')"&gt;
+          &lt;span class="option-label"&gt;For leisure (gym, office, play room)&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="option-card" onclick="toggleExtension(this, 'To live in (i.e. bedroom, granny annexe)', 'outbuilding')"&gt;
+          &lt;span class="option-label"&gt;To live in (bedroom, granny annexe)&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div id="otherOptions" style="display: none;"&gt;
+      &lt;div class="option-card" onclick="toggleExtension(this, 'Continue', 'other')" style="margin: 0 auto; max-width: 300px;"&gt;
+        &lt;span class="option-label"&gt;Continue to next step&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;button class="submit-btn" id="extensionConfirmBtn" onclick="confirmExtensions()" style="display:none; margin-top: 16px;"&gt;Continue&lt;/button&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('extensionTypeSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Bathroom Question Section --&gt;
+  &lt;div class="form-section" id="bathroomSection"&gt;
+    &lt;h2 class="form-title"&gt;With Toilet / Bathroom?&lt;/h2&gt;
+    &lt;div class="info-box"&gt;
+      This helps us understand your requirements for the site survey.
+    &lt;/div&gt;
+    &lt;div class="yesno-options"&gt;
+      &lt;button class="yesno-btn" onclick="selectBathroomOption('yes')"&gt;Yes&lt;/button&gt;
+      &lt;button class="yesno-btn" onclick="selectBathroomOption('no')"&gt;No&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('bathroomSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Size Question Sections --&gt;
+  &lt;div class="form-section" id="extensionSizeQuestionSection"&gt;
+    &lt;h2 class="form-title"&gt;Do you know approx. size of the extension?&lt;/h2&gt;
+    &lt;div class="info-box"&gt;
+      Approximate dimensions help provide accurate estimates.
+    &lt;/div&gt;
+    &lt;div class="yesno-options"&gt;
+      &lt;button class="yesno-btn" onclick="selectExtensionSizeOption('yes')"&gt;Yes&lt;/button&gt;
+      &lt;button class="yesno-btn" onclick="selectExtensionSizeOption('no')"&gt;No&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('extensionSizeQuestionSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Size Input Sections --&gt;
+  &lt;div class="form-section" id="extensionSizeSection"&gt;
+    &lt;h2 class="form-title"&gt;Approx. Size?&lt;/h2&gt;
+    &lt;div class="size-inputs"&gt;
+      &lt;input type="number" class="size-input" id="extensionLength" placeholder="Length" min="1" oninput="calculateExtensionSize()"&gt;
+      &lt;span style="font-size: 18px; color: #4a5568;"&gt;X&lt;/span&gt;
+      &lt;input type="number" class="size-input" id="extensionWidth" placeholder="Width" min="1" oninput="calculateExtensionSize()"&gt;
+      &lt;span style="font-size: 18px; color: #4a5568;"&gt;=&lt;/span&gt;
+      &lt;div style="min-width: 90px; text-align: center;"&gt;
+        &lt;div id="extensionArea" class="size-result"&gt;0 sqm&lt;/div&gt;
+        &lt;div class="size-label"&gt;Total Area&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button class="submit-btn" id="extensionSizeConfirmBtn" onclick="confirmExtensionSize()"&gt;Continue&lt;/button&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('extensionSizeSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Continue to Property Details Section --&gt;
+  &lt;div class="form-section" id="propertyDetailsSection"&gt;
+    &lt;h2 class="form-title"&gt;Ready to Continue?&lt;/h2&gt;
+    &lt;div class="info-box"&gt;
+      Great! Now let's get some basic information about your property.
+    &lt;/div&gt;
+    &lt;button class="submit-btn" id="step1Btn" onclick="goToStep2()"&gt;Continue to Property Details&lt;/button&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('propertyDetailsSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- STEP 2: ABOUT THE PROPERTY --&gt;
+&lt;div class="form-step" id="step2"&gt;
+  &lt;div class="step-indicator"&gt;
+    &lt;span class="step"&gt;1. Project Type&lt;/span&gt;
+    &lt;span class="step active"&gt;2. About Property&lt;/span&gt;
+    &lt;span class="step"&gt;3. Contact &amp; Estimate&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- Property Type Section - GRID LAYOUT --&gt;
+  &lt;div class="form-section active" id="propertyTypeSection"&gt;
+    &lt;h2 class="form-title"&gt;What is the type of property?&lt;/h2&gt;
+    &lt;div class="property-grid"&gt;
+      &lt;div class="option-card" onclick="selectPropertyType(this, 'Detached')"&gt;
+        &lt;img class="option-icon" data-icon="a1" alt=""&gt;
+        &lt;span class="option-label"&gt;Detached&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectPropertyType(this, 'Semi-detached')"&gt;
+        &lt;img class="option-icon" data-icon="a2" alt=""&gt;
+        &lt;span class="option-label"&gt;Semi-detached&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectPropertyType(this, 'Terrace (End Terrace)')"&gt;
+        &lt;img class="option-icon" data-icon="a3" alt=""&gt;
+        &lt;span class="option-label"&gt;Terrace (End Terrace)&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectPropertyType(this, 'Terrace (Mid Terrace)')"&gt;
+        &lt;img class="option-icon" data-icon="a3" alt=""&gt;
+        &lt;span class="option-label"&gt;Terrace (Mid Terrace)&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectPropertyType(this, 'Town House')"&gt;
+        &lt;img class="option-icon" data-icon="a4" alt=""&gt;
+        &lt;span class="option-label"&gt;Town House&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectPropertyType(this, 'Apartment')"&gt;
+        &lt;span class="option-label"&gt;Apartment&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="collapsed-summary" onclick="expandSection('propertyTypeSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Bedrooms Section --&gt;
+  &lt;div class="form-section" id="bedroomsSection"&gt;
+    &lt;h2 class="form-title"&gt;How many bedrooms does your property currently have?&lt;/h2&gt;
+    &lt;div class="bedroom-options"&gt;
+      &lt;button class="bedroom-btn" onclick="selectBedrooms(this, '1')"&gt;1&lt;/button&gt;
+      &lt;button class="bedroom-btn" onclick="selectBedrooms(this, '2')"&gt;2&lt;/button&gt;
+      &lt;button class="bedroom-btn" onclick="selectBedrooms(this, '3')"&gt;3&lt;/button&gt;
+      &lt;button class="bedroom-btn" onclick="selectBedrooms(this, '4')"&gt;4&lt;/button&gt;
+      &lt;button class="bedroom-btn" onclick="selectBedrooms(this, '5+')"&gt;5+&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('bedroomsSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- UK Region Section - GRID LAYOUT --&gt;
+  &lt;div class="form-section" id="regionSection"&gt;
+    &lt;h2 class="form-title"&gt;What region of the UK will the building project be located?&lt;/h2&gt;
+    &lt;div class="region-grid"&gt;
+      &lt;div class="option-card" onclick="selectRegion(this, 'London')"&gt;
+        &lt;span class="option-label"&gt;London&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'North-West England')"&gt;
+        &lt;span class="option-label"&gt;North-West England&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'North-East England')"&gt;
+        &lt;span class="option-label"&gt;North-East England&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'East Midlands')"&gt;
+        &lt;span class="option-label"&gt;East Midlands&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'West Midlands')"&gt;
+        &lt;span class="option-label"&gt;West Midlands&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'South-East England')"&gt;
+        &lt;span class="option-label"&gt;South-East England&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'South-West England')"&gt;
+        &lt;span class="option-label"&gt;South-West England&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'East of England')"&gt;
+        &lt;span class="option-label"&gt;East of England&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'Yorkshire')"&gt;
+        &lt;span class="option-label"&gt;Yorkshire&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'Wales')"&gt;
+        &lt;span class="option-label"&gt;Wales&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectRegion(this, 'Others')"&gt;
+        &lt;span class="option-label"&gt;Others&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="collapsed-summary" onclick="expandSection('regionSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Property Description Section - GRID LAYOUT --&gt;
+  &lt;div class="form-section" id="propertyDescriptionSection"&gt;
+    &lt;h2 class="form-title"&gt;Do any of these describe your existing home or plot?&lt;/h2&gt;
+    &lt;div class="description-grid"&gt;
+      &lt;div class="option-card" onclick="togglePropertyDescription(this, 'In an Area of Outstanding Natural Beauty')"&gt;
+        &lt;span class="option-label"&gt;In an Area of Outstanding Natural Beauty&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="togglePropertyDescription(this, 'In a Conservation Area')"&gt;
+        &lt;span class="option-label"&gt;In a Conservation Area&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="togglePropertyDescription(this, 'Listed Building')"&gt;
+        &lt;span class="option-label"&gt;Listed Building&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="togglePropertyDescription(this, 'New Build')"&gt;
+        &lt;span class="option-label"&gt;New Build&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="togglePropertyDescription(this, 'Not Sure')"&gt;
+        &lt;span class="option-label"&gt;Not Sure&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="togglePropertyDescription(this, 'None')"&gt;
+        &lt;span class="option-label"&gt;None&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;button class="submit-btn" id="propertyDescriptionConfirmBtn" onclick="confirmPropertyDescription()" style="display:none; margin-top: 16px;"&gt;Continue&lt;/button&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('propertyDescriptionSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Ownership Section - GRID LAYOUT --&gt;
+  &lt;div class="form-section" id="ownershipSection"&gt;
+    &lt;h2 class="form-title"&gt;Ownership of the property?&lt;/h2&gt;
+    &lt;div class="action-grid"&gt;
+      &lt;div class="option-card" onclick="selectOwnership(this, 'Owner')"&gt;
+        &lt;span class="option-label"&gt;Owner&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectOwnership(this, 'Not owner yet – Sale going through')"&gt;
+        &lt;span class="option-label"&gt;Not owner yet – Sale going through&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectOwnership(this, 'Renting / Leasehold')"&gt;
+        &lt;span class="option-label"&gt;Renting / Leasehold&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectOwnership(this, 'No – Just doing research')"&gt;
+        &lt;span class="option-label"&gt;No – Just doing research&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="collapsed-summary" onclick="expandSection('ownershipSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Timeline Section - GRID LAYOUT --&gt;
+  &lt;div class="form-section" id="timelineSection"&gt;
+    &lt;h2 class="form-title"&gt;When are you hoping to start the design and drafting process?&lt;/h2&gt;
+    &lt;div class="action-grid"&gt;
+      &lt;div class="option-card" onclick="selectTimeline(this, 'ASAP')"&gt;
+        &lt;span class="option-label"&gt;ASAP&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectTimeline(this, '3 months')"&gt;
+        &lt;span class="option-label"&gt;3 months&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectTimeline(this, '6 months')"&gt;
+        &lt;span class="option-label"&gt;6 months&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectTimeline(this, '12 months+')"&gt;
+        &lt;span class="option-label"&gt;12 months+&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class="option-card" onclick="selectTimeline(this, 'Not sure')"&gt;
+        &lt;span class="option-label"&gt;Not sure&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="collapsed-summary" onclick="expandSection('timelineSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Continue to Contact Section --&gt;
+  &lt;div class="form-section" id="continueToContactSection"&gt;
+    &lt;h2 class="form-title"&gt;Ready to Continue?&lt;/h2&gt;
+    &lt;div class="info-box"&gt;
+      Great! We have all the property information we need. Click below to proceed to contact details and your estimate.
+    &lt;/div&gt;
+    &lt;button class="submit-btn" id="step2Btn" onclick="goToStep3()"&gt;Continue to Contact &amp; Estimate&lt;/button&gt;
+    &lt;div class="collapsed-summary" onclick="expandSection('continueToContactSection')"&gt;Click to change&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- STEP 3: CONTACT &amp; ESTIMATE --&gt;
+&lt;div class="form-step" id="step3"&gt;
+  &lt;div class="step-indicator"&gt;
+    &lt;span class="step"&gt;1. Project Type&lt;/span&gt;
+    &lt;span class="step"&gt;2. About Property&lt;/span&gt;
+    &lt;span class="step active"&gt;3. Contact &amp; Estimate&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- Estimate Display - Moved to top --&gt;
+  &lt;div class="form-section active" id="estimateSection"&gt;
+    &lt;div id="estimateDisplay"&gt;
+      &lt;!-- This will be filled dynamically --&gt;
+    &lt;/div&gt;
+    
+    &lt;div id="revealContainer" class="reveal-container"&gt;
+      &lt;!-- Reveal button will be shown here when estimate is available --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Contact Information - Now below the estimate --&gt;
+  &lt;div class="form-section active" id="contactSection"&gt;
+    &lt;h2 class="form-title"&gt;Leave details if you want to be contacted&lt;/h2&gt;
+    &lt;div class="info-box"&gt;
+      Fill in your details below and we'll get in touch to discuss your project.
+    &lt;/div&gt;
+    
+    &lt;div class="input-row"&gt;
+      &lt;input class="input-field" placeholder="First name" id="firstname"&gt;
+      &lt;input class="input-field" placeholder="Last name" id="lastname"&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="input-row"&gt;
+      &lt;input class="input-field" placeholder="Phone/WhatsApp number" id="phone"&gt;
+      &lt;input class="input-field" placeholder="Email address" id="email"&gt;
+    &lt;/div&gt;
+    
+    &lt;input class="input-field" placeholder="Property address" id="propertyAddress" style="margin-bottom:16px;"&gt;
+    
+    &lt;h3 class="form-title" style="font-size: 16px; margin-top: 20px;"&gt;Preferred time to be contacted&lt;/h3&gt;
+    &lt;div class="time-options"&gt;
+      &lt;button class="time-btn" onclick="selectTimeSlot(this, 'Morning (8am-12pm)')"&gt;Morning&lt;br&gt;(8am-12pm)&lt;/button&gt;
+      &lt;button class="time-btn" onclick="selectTimeSlot(this, 'Afternoon (12pm-5pm)')"&gt;Afternoon&lt;br&gt;(12pm-5pm)&lt;/button&gt;
+      &lt;button class="time-btn" onclick="selectTimeSlot(this, 'Evening (5pm-8pm)')"&gt;Evening&lt;br&gt;(5pm-8pm)&lt;/button&gt;
+      &lt;button class="time-btn" onclick="selectTimeSlot(this, 'Any time')"&gt;Any time&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="optional-note"&gt;Optional - select your preferred contact time&lt;/div&gt;
+    
+    &lt;label class="checkbox-label" style="margin-top: 20px;"&gt;
+      &lt;input type="checkbox" id="terms" onchange="validateStep3()"&gt; 
+      I accept the terms and conditions *
+    &lt;/label&gt;
+    
+    &lt;button class="submit-btn" id="step3Btn" onclick="submitCompleteForm()" disabled&gt;
+      Get Detailed Quote
+    &lt;/button&gt;
+    &lt;button class="back-btn" onclick="goToStep2()"&gt;← Back&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- SUCCESS --&gt;
+&lt;div class="form-step" id="success"&gt;
+  &lt;div class="success-message"&gt;
+    &lt;h2&gt;✓ Thank You!&lt;/h2&gt;
+    &lt;p&gt;Your quote request has been submitted successfully. We'll be in touch soon with your detailed estimate.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+const ICON_DATA = {"a1":"iVBORw0KGgoAAAANSUhEUgAAAIAAAABxCAMAAAAqLltFAAAAkFBMVEXt7e3r6+tra2sAAAD6+vp1dXX///+ZmZmHh4d/f3/JyclWVla/v7/o6Oimpqbn5+fY2Ni1tbVoaGhpaWn///9ra2ttbW2qqqplZWX9/f3W1tZra2u4uLjHx8dsbGzn5+dbW1uurq7y8vI/Pz9KSkrj4+Py8vItLS1xcXFxcXGXl5ehoaG/v7/a2trW1tbh4eFWnWMlAAAAMHRSTlOy3/4A/v4G+P4D/gQE//dX//4xUi+tzwMRT5Fxyq+Oc/3cZAUIPNAiP8Ibcr042ILkGryqAAAEvUlEQVR42tWbaVvjOgyFfZ3YzkIzCUtaKFMKA7Pc9f//u2u7acniJJJswzP6WAp+ic6RnMRiyScH+y0AyrwsyzzP5ScBDNeVuYWxYbjiA+TJzc3NtY7dbudaL48MkCd7YYLbaNv2TsfhsN/vT1w6QzImgP7/u7VNiHFwfnftdRHWAMrkure+KwQ/7Mz34gDkya5dATAI+29JnkcBKL+tr28Q2psk2UYAyJMDZH2jDaoUFgF22gAcGFoKJUUKDGwADpICujAxHwM4pZCHAtAG4EiATgplGIBy12LXp1QFNn8B7gjrn6SQIKTAFjoAp4VASYEFMYCHFNicAbhX2KogcypAnpRccE8EkweAFNwAr63v+uDqzEIaYJqHdSkwvw6wbsnXlUbNAhvA3aglAgDfAfykwAJ0AK/qPAEo28Drn6RQzkmBxTEAvFGzkQEOUdZfkAKLZwCYFFjIDkBp1CyqAQBSYP273jby+q5GzaIbwNmoyylAPANM89CXAvsIA0zy8Ovn5bEHi9MBuqgqpVSWZb0HDF3c/RhcAZn8GSPbVXqJjY66rouiaJrKcv11ugYngG3ytsmCr6/SpfijfwW2yT9pWgROQra4fvp9CPBmPmtCIohNutHpz/TVrqqmafTV1zkwqXAAXCVf7McbFQ6gTtPs6PSAEIarkVYEF4BMWYQ6lBSKNK2Wfn5UY4BjJ9oQUhC80Qld/s4EwPxeYRGqIAYoOB5AK7cOIgVtgJqTAPTnAaRgDCCoANykz9OSxgCcDtBJYVN5GACQwwUATymsG2AdQPcxK4Uii2IACAAXRClADAAC0H+KIgWQAYAA+jtWCrUKbQAwAF4KMAMgAJBSABoAA3CxZBXQADgAeHUGGwALwGGNGm4APMC5US9KAW4AAgCgOiMMQAJYkwLGAESAc6N2SMHegxQ8OsD8ng1nADrAnBSQBvABOFfnoRSQBvADcFRnrAE8ASZ7toa0k/cB6DdqigECALw36iPBAEEALlIgGCAMwHnPlhIfbQQA6Kpzc/w8ACMF6o1kIICjot7OjwHUkfh3qABVH0BK+aA+FEBUT1IOnxXfPmYfBiDUgxw9qjWPj++fxccAZF9vx49q7aO6ROdBxAfIHu97rxLZ8NTc7VcVGcAkv39Ajw1P6uk8IKWABLDJl/Ov7bQU5EslYgHY5F/JxVe3WCkgALLn++l7ZMfb8ysjhSw4gFBPcnw6c+b8AEoKUADVs976GRKD+gSTAgzAWu9KIo7xSKgUIADi+WX24OfsQSYJlMI6wKnubvGH2eQWIoVVgLnkQ84TQqSwAmCTn8uEBnCWAhnA1t3lU79rp2qtFP7OSABiUndJB5utFJ4zPMCp7gY6Wy6f5iw5B7CafNTx/oVG7QYYN13v+QIjBbclnQCQ5GMHHMyezdWoHQCOphtkwsLdqCcAwx1X2BEPlxRGAPDkk2ZMHI16CKAeblHL44dczJ5tUJ37ANkjIvnkKZtRo34HEGbHhZ62oIz5DBr1GUCo/yTliD9pzqgvhQ5gpekGH3R6b9QWAFp3Q05adVIwzwdE9SLJozb0Ua9uz6bq6kFS5zs8Z81Mo/7yLyMmP8iw26no5VEHnVYRpN8InPe4n+8E3v9g5rmO9ssbEgAAAABJRU5ErkJggg==","a2":"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","a3":"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","a4":"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","b1":"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","b2":"iVBORw0KGgoAAAANSUhEUgAAAIAAAAB0CAMAAAB648r2AAAAkFBMVEWdsOCcutb39/f19fWmwdypxN96enq8vLzl5ue9vb2XtdOZpKpsnrSmwdvAvrzCwL7Pz88AAP9/f/+Ts9MA//9///9VVaoAAH8/f38AAAC7u7umwNnAwMCSsM/7+/uPrs6lvdT+/v7n5+fX19evy+X7+/u8vLypqamq///I1+aivta3t7e6urq7u7u8vLx/v79HzUnzAAAAMHRSTlMZWlmgodUCzdRvmA8Ibf//CQEC0AECAwIEAP7+/v7+/v4D/f7+MwoEA/6mMVSMrwSgAvvDAAAFgklEQVR42u2ba3+aMBTGo1Zt1W5du1sAlQgFN2/f/9vtJFwEkkBOErq9WF7tV6fn3/M8z6FgQuhfXuQ/wH+AvhcZY3meFQv+xdgCfsL+gQ4sPGL0AOT08ni9Xi+Xy9PT0/l8PsGCVryUr7KxATJ6idorEGsJ63o5gUDjAmT0XFbsrBLmklGWjwiQ05O6fs0RPMH/WowFwGgW9ANAJx7P0Cg2CgBj2XKgvkCYnXivRgDI6HW4fqFDDqH0DrCGAARmK1qeecP8AmgDoNbheuJv8QgwGABJB4iktRWITQCUVmALPwCMvSyR9TmCdSSJbQB8WYHYB0BlBfx0Jg4BkLtgMZ2JUwCUUwFnBeIYAKUVcksAuwDIVsgxo5G4B0AZSWME4iMALpEkfgIg6TAznc7EVwDkSK6NdCDeAmAZSVIFIF/6rW9qBeI1AKpIDliB1PcAwRgLLtSL/ulMfAcAawXiPwBKK7AeAP8BkBB6LtQE6r8sR61fT2cdwMJrAA58JWI1bmqjaLlWE5CMThOf9XeqBUy7w1SpAmF0ujt4a0Gy06+psgWEsRm8mIxffzdTPlch9L1okpe/BMQHFQZIhBlairzTHgAfCKK++nkGrIMe4FB2LvFgwChoP9b5zNen4lU9QBAdPCAU9bdixd0VcgCiBQgqBAcdkqL+XrE40v7X7pnSm64DUe1gW4RENDDmxcqS7cV/tCLyxbkCAAQnHQoDxmVlLcLkZ/fifAeIAgcEUf9TfC+rIuAIbxPQ4asawEUHYcC4VUzZhH2hA9EAWCM0AzCAwK2woWyjAbCzQhWArSEC14EsNAB3KxwSfABUPVf97A1EuH1RA6B1aAfApAnb0gobDQDXoZrOET4AMkJjHjUQJhv6VQeAsYIcAB1Adzy+TdirFiAync7KAHR9r8aar6C8FsDQCroANOqH7VVfn7bpih77AJpWsAhAVT8OdSt9GAIYnM69ASg6ra8fpr8HAQZ0GAoAj3zoCNCLMByAvvqmAPpIGgQg9AKgsQI+ANYASh2cAoAGaESyRHALgAVAxwqOAbACaE1nxwDYATSt4BgAW4CGFdwCYA9w16G/fjwagEAQBnAJQBcARxCBE5Jg61q/BGDvRbCwAE4BbAHQ91kxXVAAoaMBGxLALfP0USD4ATCuXwHwp/psitKhD8AsAC0A8QhRPKoy1QEAfu01f/Hvjes3AARCaQVTAPVNB6Z+C0B8u8KtkJggcIA4jGWCvbkBugAoKxQAoYyAqt8FqK0wHMkKIAzbOuDqywBCBxMr3AGgCfc7YEQAxFtlAFMrNAAaOqAMCO8L5ysZQCC8zAas0AKoELD103DCnxsS1S6qoencAaisgCv/QLTbeNjQdJYAeBO2iOaH6bx6RKLbytUbSRmA3/Sa10/n94dEut10vdNZBRAaAsTQ/dX6/h2WfkNjjxXsOwDlUy7+0WRLpz6SDhKI7t+Y8a5atRUsAUD8cPKd5q+IXbXq6WwFEJfRy3HbepXT2QIAfnsh/g2/r1hhBTxAGb0js9rYLFkBC8C7/7yh7Jv1zupOJHEAlfjEZWt3ezpjAPjcfagfTTvsLW/qgADQi4/f3M4RyulsCsCTD79+33Ye1O762gpmAPLcdd7eX1vBrAPS3PVwvqCywuMQAO/+84/6mxmPBxyK6TxP0/YFOI4N5q6fExZcB0Yn8zZBE0A7d30d8eA60M1zmMaaDpiI73bKhvE3kocGQg0gxNfMXa/HfL5AgwnoUAoRxwZz1/M5owW8ubaCAMCI7+WgU87oegU6xAXA4Nwd4aTVkVshTcUmCX7RXdPXb6gPcD7qxW6lDuXcxX6gh7Nmrzn9PgHx592tAR932C3nOjS+Ef9wgPKCZ3XIwtdxP5Yd7d74B9eBCUd2u6n/AAAAAElFTkSuQmCC","b3":"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","b4":"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","b5":"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","b6":"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","b7":"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","b8":"iVBORw0KGgoAAAANSUhEUgAAAIAAAABZCAMAAADB0dweAAAAkFBMVEWZttWQrs2VtNK6urq8vLyvs7amwtz8/Pz9/f1zm7apxd+9vb3d3t5///9/f/+eu9iq//+mw90A//9jf7HAwMAAAH8AAP8AVVV/qtTAvrwAAAC7u7vAwMCSsM+mwNn7+/v+/v6Qrs6mvtXY2Njn5+ewy+b////+/v67u7uqqqp/f39/v7/5+fn+/v6Us9Oqqv/wQoTvAAAAMHRSTlOVJlpcoCWibbAM2c0OAgLbA2wBBc8CAQMG/wD+/v7+/gP+/f7+/sxOCQMCBC6Q0ANWPYiXAAAFG0lEQVR42sWa6WKiMBSFEavW1tZ29omIkcUCWvv+bzdZiJBwswDByS/bSs/HPedeAhogp4W/6hfn88s35HMFTu86IzQLrkE4Yz+V9wYoqfyeLQrxB+Ff9wR4xeh7SMWPRwGBcHU3AEyqH16JOhcnFMf9NviJXu8E8MWrf2zrkxWs0foeACVG67a8eHXcX2foa3KAikiE+6b6bZD9dU1bY0qAb4r5ovr7pgbnKQE05rcI9n4IYICXCq1DwHyZIKS9UOEKl0W9yrLEVYXxSAA6d5Xq77uLE8ADAZdjAM6W6jcEW1Sg+Y/nB7bmbC0Wi6LYkAaqhgK05q7h9PnvrxgtImXt6HqeI1TgIQCvL/XctcnTP+RbXDxzRWVF0cPC8aIVmOautvpUPonzLXoA9SnCbl6QgPYD+O5oPpePk3yr1acI1Ad7QwTtuTsLzK3X/D5mK9mZFvehcASoSu3cBU/frs98eChsUQgc5i4sb9dnVZgvzLuHwGXuAtV3BKijYGjJwGnuNlxxT31rFMj2ymXuKtXvoc8RCu10DnCv1huiz6NQaaZzQLN/3Lu33hB9ivBDE4UABfnxWJ+3Y/UH6OunMwVI6tq7yg8CqKdCZzRSAPYvE10BuvLD9IUPJQYB6IIIVPPH6IMt2QYACIDTH6EPTWcJIE5kAkh+nL64UDdRkAHiRGnJ2Lu+Op0VgIYAlE8SHwBSFFQAQQBX30sB5Ch0AGgUdfJ5nPzdeVpkOmN6HQIAKAFU/TxezqMRiqm0ceZRwCBADLReHOfLGR6hnx5aK6vXCmMC8ASarVb/KURoc8iGIkQHaD0iAhDmeZJ0wq6av5yRxvkkx6SD9ckZdwgumO4Hlnkun7MEQMwn1UfoDaMTK9+QIhDpiCVPrJSu7PBBMkC2CeGTTCBXgFX/TCN7OqTDEDJauXYARV0+2J4Qo/V7nCcQAK1++BN90c0MBdhFrIxp7wCmu6izBADfFS/jJgriBWu9mbh2MAAR57RfADJAvwWAftFb8mUu4s8ByNkz88VzEF4BclhPH3T6bQDy399aUagrIMyXAeiBWR+EAw2gFYDdRy5qH+g1h5j/vkb4pXXvLACIcI8oZDp9FYA0GvOBICTCfOlZYANAEVyjkMEBBAH48wHmg2Q+AODsQ6rXBwDYw8nf79z8N3X/KgPcfDAiaAOoA+DPiN4X0JMFBcDFB6O+BoBFAXwQ3AGwt6S2AYwAJArg3TQAYIlCZtTXA+g+OoAATC1paACPAPoopBZ9bwCaKJgD6BcAioJd3ytANwrmBvAPoEYhs+v7BpB8sDXANACND6mL/gQAjQ/WAE4FcGvJ6L8B8Cikbm/sDxDtXM4sPTi9Lcp6AuDL6eCCQADsDrC0fNJ7wz4lQCvWZeMB2KR8vDh/gaHZt9L7w9RSBCsAa9fTB+LPB3otcsTl0eaDDYBNixXmu66eAOygj5PZBzNAbT47mQEADGFDopDqNUwAN/Nxry+xdHwwRsEAcDMfoxEA7HBDFLQArPrC/DEAlihoABTzxwHwllzBPoAAjfkYeQHgLQlGAQLomj8egEcBmM5dAF79DXS/NQaAI6w6UVABOq3nDwCezjLATlt9LwDQdJYA+NyttJ+jjwfotmQLQLSe/mN8DwBNS9ayNwCj+T4BlOksAMzm+wWQokAB6t3pamP7EoU3gFYUWAXAuTspQHOhpptSeO5ODHCbztnBwfxJAG7TWTN3pweop/PnxW7+VAC1svM36v4BEuHBpVpRd6wAAAAASUVORK5CYII=","b9":"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"};
+document.querySelectorAll('img[data-icon]').forEach(function (img) { img.src = 'data:image/png;base64,' + ICON_DATA[img.dataset.icon]; });
+// [JavaScript code remains exactly the same as in the previous version]
+// The JavaScript functionality is unchanged, only CSS/layout was optimized
+const state = {
+  // Project Type info
+  property: null,
+  propertyType: null,
+  extensionType: null,
+  extensions: [],
+  size: null,
+  area: 0,
+  knowsSize: false,
+  hasBathroom: false,
+  
+  // Property info
+  propertyBuildingType: null,
+  bedrooms: null,
+  region: null,
+  propertyDescriptions: [],
+  ownership: null,
+  timeline: null,
+  
+  // Contact &amp; Estimate info
+  estimate: 0,
+  estimateRevealed: false,
+  preferredTime: null
+};
+
+// Helper function to check if region is London
+function isLondonRegion() {
+  return state.region === 'London';
+}
+
+// Pricing constants - using isLondonRegion() to determine prices
+const PRICES = {
+  extension: {
+    'One Storey Rear Extension': { london: 2500, outside: 2000 },
+    'Two Storey Rear Extension': { london: 1750, outside: 1400 },
+    'One Storey Side Extension': { london: 2500, outside: 2000 },
+    'Two Storey Side Extension': { london: 1750, outside: 1400 },
+    'Wrap Around Extension': { london: 2500, outside: 2000 }
+  },
+  loft: {
+    'Loft with Dormer': { london: 2200, outside: 1800 },
+    'Loft without Dormer': { london: 1500, outside: 1100 }
+  },
+  garage: {
+    london: 1200,
+    outside: 800
+  },
+  outbuilding: {
+    'For leisure (i.e. gym room, play room, home office)': { london: 2000, outside: 1200 },
+    'To live in (i.e. bedroom, granny annexe)': { london: 2500, outside: 2000 }
+  }
+};
+
+// Helper function to get price based on region
+function getPrice(key, category) {
+  if (!key || !category || !PRICES[category]) return 0;
+  
+  if (category === 'garage') {
+    return isLondonRegion() ? PRICES.garage.london : PRICES.garage.outside;
+  }
+  
+  if (!PRICES[category][key]) return 0;
+  
+  const priceObj = PRICES[category][key];
+  return isLondonRegion() ? priceObj.london : priceObj.outside;
+}
+
+function expandSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (section.classList.contains('collapsed')) {
+    section.classList.remove('collapsed');
+    event.stopPropagation();
+  }
+}
+
+function selectProperty(el, propertyType) {
+  document.querySelectorAll('#propertySection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.property = propertyType;
+  state.propertyType = propertyType;
+  
+  document.getElementById('extensionOptions').style.display = 'none';
+  document.getElementById('loftOptions').style.display = 'none';
+  document.getElementById('garageOptions').style.display = 'none';
+  document.getElementById('outbuildingOptions').style.display = 'none';
+  document.getElementById('otherOptions').style.display = 'none';
+  
+  state.extensions = [];
+  document.querySelectorAll('#extensionTypeSection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+  document.getElementById('extensionConfirmBtn').style.display = 'none';
+  
+  if (propertyType === 'Extension') {
+    document.getElementById('extensionOptions').style.display = 'block';
+  } else if (propertyType === 'Loft Conversion') {
+    document.getElementById('loftOptions').style.display = 'block';
+  } else if (propertyType === 'Garage Conversion') {
+    document.getElementById('garageOptions').style.display = 'block';
+  } else if (propertyType === 'Outbuilding / Garden House / Annex') {
+    document.getElementById('outbuildingOptions').style.display = 'block';
+  } else {
+    document.getElementById('otherOptions').style.display = 'block';
+  }
+  
+  document.getElementById('propertySection').classList.add('collapsed');
+  document.getElementById('extensionTypeSection').classList.add('active');
+  
+  const title = document.querySelector('#extensionTypeSection .form-title');
+  if (propertyType === 'Extension') {
+    title.textContent = 'What type of extension?';
+  } else if (propertyType === 'Loft Conversion') {
+    title.textContent = 'What type of loft conversion?';
+  } else if (propertyType === 'Garage Conversion') {
+    title.textContent = 'What type of garage?';
+  } else if (propertyType === 'Outbuilding / Garden House / Annex') {
+    title.textContent = 'Which best describes your project?';
+  } else {
+    title.textContent = 'Continue to next step';
+  }
+  
+  setTimeout(() =&gt; {
+    document.getElementById('extensionTypeSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 300);
+  
+  event.stopPropagation();
+}
+
+function toggleExtension(el, value, type) {
+  document.querySelectorAll('#extensionTypeSection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.extensions = [value];
+  state.extensionType = value;
+  
+  document.getElementById('extensionConfirmBtn').style.display = 'block';
+  
+  event.stopPropagation();
+}
+
+function confirmExtensions() {
+  document.getElementById('extensionTypeSection').classList.add('collapsed');
+  
+  if (state.propertyType === 'Extension') {
+    document.getElementById('extensionSizeQuestionSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('extensionSizeQuestionSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else if (state.propertyType === 'Loft Conversion') {
+    document.getElementById('loftSizeQuestionSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('loftSizeQuestionSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else if (state.propertyType === 'Garage Conversion') {
+    document.getElementById('garageSizeQuestionSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('garageSizeQuestionSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else if (state.propertyType === 'Outbuilding / Garden House / Annex') {
+    if (state.extensionType === 'To live in (i.e. bedroom, granny annexe)') {
+      document.getElementById('bathroomSection').classList.add('active');
+      setTimeout(() =&gt; {
+        document.getElementById('bathroomSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 300);
+    } else {
+      document.getElementById('outbuildingSizeQuestionSection').classList.add('active');
+      setTimeout(() =&gt; {
+        document.getElementById('outbuildingSizeQuestionSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 300);
+    }
+  } else {
+    state.knowsSize = false;
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  }
+}
+
+function selectBathroomOption(option) {
+  document.querySelectorAll('#bathroomSection .yesno-btn').forEach(b =&gt; b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  
+  document.getElementById('bathroomSection').classList.add('collapsed');
+  state.hasBathroom = (option === 'yes');
+  
+  document.getElementById('outbuildingSizeQuestionSection').classList.add('active');
+  setTimeout(() =&gt; {
+    document.getElementById('outbuildingSizeQuestionSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 300);
+}
+
+function selectExtensionSizeOption(option) {
+  document.querySelectorAll('#extensionSizeQuestionSection .yesno-btn').forEach(b =&gt; b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  
+  document.getElementById('extensionSizeQuestionSection').classList.add('collapsed');
+  state.knowsSize = (option === 'yes');
+  
+  if (option === 'yes') {
+    document.getElementById('extensionSizeSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('extensionSizeSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    state.area = 0;
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  }
+}
+
+function calculateExtensionSize() {
+  const length = parseFloat(document.getElementById('extensionLength').value) || 0;
+  const width = parseFloat(document.getElementById('extensionWidth').value) || 0;
+  const area = length * width;
+  state.area = area;
+  document.getElementById('extensionArea').textContent = area.toFixed(1) + ' sqm';
+}
+
+function confirmExtensionSize() {
+  if (state.area &gt; 0) {
+    document.getElementById('extensionSizeSection').classList.add('collapsed');
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    alert('Please enter valid dimensions');
+  }
+}
+
+function selectGarageSizeOption(option) {
+  document.querySelectorAll('#garageSizeQuestionSection .yesno-btn').forEach(b =&gt; b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  
+  document.getElementById('garageSizeQuestionSection').classList.add('collapsed');
+  state.knowsSize = (option === 'yes');
+  
+  if (option === 'yes') {
+    document.getElementById('garageSizeSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('garageSizeSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    state.area = 0;
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  }
+}
+
+function calculateGarageSize() {
+  const length = parseFloat(document.getElementById('garageLength').value) || 0;
+  const width = parseFloat(document.getElementById('garageWidth').value) || 0;
+  const area = length * width;
+  state.area = area;
+  document.getElementById('garageArea').textContent = area.toFixed(1) + ' sqm';
+}
+
+function confirmGarageSize() {
+  if (state.area &gt; 0) {
+    document.getElementById('garageSizeSection').classList.add('collapsed');
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    alert('Please enter valid dimensions');
+  }
+}
+
+function selectOutbuildingSizeOption(option) {
+  document.querySelectorAll('#outbuildingSizeQuestionSection .yesno-btn').forEach(b =&gt; b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  
+  document.getElementById('outbuildingSizeQuestionSection').classList.add('collapsed');
+  state.knowsSize = (option === 'yes');
+  
+  if (option === 'yes') {
+    document.getElementById('outbuildingSizeSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('outbuildingSizeSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    state.area = 0;
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  }
+}
+
+function calculateOutbuildingSize() {
+  const length = parseFloat(document.getElementById('outbuildingLength').value) || 0;
+  const width = parseFloat(document.getElementById('outbuildingWidth').value) || 0;
+  const area = length * width;
+  state.area = area;
+  document.getElementById('outbuildingArea').textContent = area.toFixed(1) + ' sqm';
+}
+
+function confirmOutbuildingSize() {
+  if (state.area &gt; 0) {
+    document.getElementById('outbuildingSizeSection').classList.add('collapsed');
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    alert('Please enter valid dimensions');
+  }
+}
+
+function selectLoftSizeOption(option) {
+  document.querySelectorAll('#loftSizeQuestionSection .yesno-btn').forEach(b =&gt; b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  
+  document.getElementById('loftSizeQuestionSection').classList.add('collapsed');
+  state.knowsSize = (option === 'yes');
+  
+  if (option === 'yes') {
+    document.getElementById('loftSizeSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('loftSizeSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    state.area = 0;
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  }
+}
+
+function calculateLoftSize() {
+  const length = parseFloat(document.getElementById('loftLength').value) || 0;
+  const width = parseFloat(document.getElementById('loftWidth').value) || 0;
+  const area = length * width;
+  state.area = area;
+  document.getElementById('loftArea').textContent = area.toFixed(1) + ' sqm';
+}
+
+function confirmLoftSize() {
+  if (state.area &gt; 0) {
+    document.getElementById('loftSizeSection').classList.add('collapsed');
+    document.getElementById('propertyDetailsSection').classList.add('active');
+    setTimeout(() =&gt; {
+      document.getElementById('propertyDetailsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  } else {
+    alert('Please enter valid dimensions');
+  }
+}
+
+// STEP 2 FUNCTIONS
+function selectPropertyType(el, propertyType) {
+  document.querySelectorAll('#propertyTypeSection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.propertyBuildingType = propertyType;
+  
+  document.getElementById('propertyTypeSection').classList.add('collapsed');
+  document.getElementById('bedroomsSection').classList.add('active');
+  
+  setTimeout(() =&gt; {
+    document.getElementById('bedroomsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 300);
+  
+  event.stopPropagation();
+}
+
+function selectBedrooms(el, bedrooms) {
+  document.querySelectorAll('.bedroom-btn').forEach(b =&gt; b.classList.remove('selected'));
+  el.classList.add('selected');
+  state.bedrooms = bedrooms;
+  
+  document.getElementById('bedroomsSection').classList.add('collapsed');
+  document.getElementById('regionSection').classList.add('active');
+  
+  setTimeout(() =&gt; {
+    document.getElementById('regionSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 300);
+}
+
+function selectRegion(el, region) {
+  document.querySelectorAll('#regionSection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.region = region;
+  
+  document.getElementById('regionSection').classList.add('collapsed');
+  document.getElementById('propertyDescriptionSection').classList.add('active');
+  
+  setTimeout(() =&gt; {
+    document.getElementById('propertyDescriptionSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 300);
+  
+  event.stopPropagation();
+}
+
+function togglePropertyDescription(el, description) {
+  el.classList.toggle('selected');
+  
+  if (state.propertyDescriptions.includes(description)) {
+    state.propertyDescriptions = state.propertyDescriptions.filter(d =&gt; d !== description);
+  } else {
+    // If "None" is selected, clear all other selections
+    if (description === 'None') {
+      document.querySelectorAll('#propertyDescriptionSection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+      el.classList.add('selected');
+      state.propertyDescriptions = ['None'];
+    } else {
+      // Remove "None" if it was selected before
+      state.propertyDescriptions = state.propertyDescriptions.filter(d =&gt; d !== 'None');
+      document.querySelectorAll('#propertyDescriptionSection .option-card')
+        .forEach(c =&gt; {
+          if (c.querySelector('.option-label').textContent === 'None') {
+            c.classList.remove('selected');
+          }
+        });
+      state.propertyDescriptions.push(description);
+    }
+  }
+  
+  // Show confirm button if at least one option is selected
+  const confirmBtn = document.getElementById('propertyDescriptionConfirmBtn');
+  if (state.propertyDescriptions.length &gt; 0) {
+    confirmBtn.style.display = 'block';
+  } else {
+    confirmBtn.style.display = 'none';
+  }
+  
+  event.stopPropagation();
+}
+
+function confirmPropertyDescription() {
+  if (state.propertyDescriptions.length &gt; 0) {
+    document.getElementById('propertyDescriptionSection').classList.add('collapsed');
+    document.getElementById('ownershipSection').classList.add('active');
+    
+    setTimeout(() =&gt; {
+      document.getElementById('ownershipSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 300);
+  }
+}
+
+function selectOwnership(el, ownership) {
+  document.querySelectorAll('#ownershipSection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.ownership = ownership;
+  
+  document.getElementById('ownershipSection').classList.add('collapsed');
+  document.getElementById('timelineSection').classList.add('active');
+  
+  setTimeout(() =&gt; {
+    document.getElementById('timelineSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 300);
+  
+  event.stopPropagation();
+}
+
+function selectTimeline(el, timeline) {
+  document.querySelectorAll('#timelineSection .option-card').forEach(c =&gt; c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.timeline = timeline;
+  
+  document.getElementById('timelineSection').classList.add('collapsed');
+  document.getElementById('continueToContactSection').classList.add('active');
+  
+  setTimeout(() =&gt; {
+    document.getElementById('continueToContactSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 300);
+  
+  event.stopPropagation();
+}
+
+// NAVIGATION FUNCTIONS
+function goToStep2() {
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goToStep3() {
+  calculateEstimate();
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step3').classList.add('active');
+  updateEstimate();
+  window.scrollTo(0, 0);
+}
+
+function goToStep1() {
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goToStep2From3() {
+  document.getElementById('step3').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// STEP 3 FUNCTIONS
+function calculateEstimate() {
+  if (state.knowsSize &amp;&amp; state.area &gt; 0) {
+    if (state.propertyType === 'Extension' &amp;&amp; state.extensionType) {
+      const pricePerSqm = getPrice(state.extensionType, 'extension');
+      state.estimate = pricePerSqm * state.area;
+    } else if (state.propertyType === 'Loft Conversion' &amp;&amp; state.extensionType) {
+      const pricePerSqm = getPrice(state.extensionType, 'loft');
+      state.estimate = pricePerSqm * state.area;
+    } else if (state.propertyType === 'Garage Conversion' &amp;&amp; state.extensionType) {
+      const pricePerSqm = getPrice(state.extensionType, 'garage');
+      state.estimate = pricePerSqm * state.area;
+    } else if (state.propertyType === 'Outbuilding / Garden House / Annex' &amp;&amp; state.extensionType) {
+      const pricePerSqm = getPrice(state.extensionType, 'outbuilding');
+      state.estimate = pricePerSqm * state.area;
+    } else {
+      state.estimate = 0;
+    }
+  } else {
+    state.estimate = 0;
+  }
+}
+
+function updateEstimate() {
+  calculateEstimate();
+  
+  const estimateDisplay = document.getElementById('estimateDisplay');
+  const revealContainer = document.getElementById('revealContainer');
+  
+  if (state.estimate &gt; 0 &amp;&amp; !state.estimateRevealed) {
+    estimateDisplay.innerHTML = `
+      &lt;h2 class="form-title"&gt;Your Estimated Cost&lt;/h2&gt;
+      &lt;div class="estimate-display"&gt;
+        &lt;div style="text-align: center; padding: 16px;"&gt;
+          &lt;div style="font-size: 16px; color: #4a5568; margin-bottom: 12px; line-height: 1.4;"&gt;
+            ${getEstimateDescription()}
+          &lt;/div&gt;
+          &lt;div style="font-size: 20px; color: #7c3aed; font-weight: 600; padding: 16px; background: #f5f3ff; border-radius: 8px; border: 2px dashed #7c3aed;"&gt;
+            ????
+          &lt;/div&gt;
+          &lt;div class="estimate-note" style="margin-top: 16px;"&gt;
+            Click "Reveal Estimate" below to see your calculated price
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `;
+    
+    revealContainer.innerHTML = `
+      &lt;button class="reveal-btn" onclick="revealEstimate()"&gt;
+        🎯 Reveal Estimate
+      &lt;/button&gt;
+    `;
+    
+  } else if (state.estimate &gt; 0 &amp;&amp; state.estimateRevealed) {
+    estimateDisplay.innerHTML = `
+      &lt;h2 class="form-title"&gt;Your Estimated Cost&lt;/h2&gt;
+      &lt;div class="estimate-display"&gt;
+        &lt;div id="estimateAmount" class="estimate-amount"&gt;£${Math.round(state.estimate).toLocaleString()}&lt;/div&gt;
+        &lt;div id="estimateDetails" style="color: #4a5568; margin-bottom: 12px; font-size: 15px; line-height: 1.4;"&gt;
+          ${getEstimateDetails()}
+        &lt;/div&gt;
+        &lt;div class="estimate-note"&gt;
+          * This is a rough estimate. Final cost may vary based on site survey and specific requirements.
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `;
+    
+    revealContainer.innerHTML = '';
+    
+  } else {
+    estimateDisplay.innerHTML = `
+      &lt;h2 class="form-title"&gt;Estimate Information&lt;/h2&gt;
+      &lt;div class="no-estimate-display"&gt;
+        &lt;div class="no-estimate-message"&gt;Estimate Not Available&lt;/div&gt;
+        &lt;div class="no-estimate-note"&gt;
+          We need approximate dimensions to provide an accurate estimate.&lt;br&gt;
+          &lt;strong&gt;Don't worry!&lt;/strong&gt; We'll contact you to arrange a site survey and provide a detailed quote.
+        &lt;/div&gt;
+        &lt;div style="margin-top: 16px; padding: 12px; background: white; border-radius: 8px; border: 1px solid #fbbf24; font-size: 14px;"&gt;
+          &lt;strong&gt;What to expect:&lt;/strong&gt;
+          &lt;ul style="text-align: left; margin: 8px 0 0 0; padding-left: 20px;"&gt;
+            &lt;li&gt;We'll contact you within 24 hours&lt;/li&gt;
+            &lt;li&gt;Free site survey and consultation&lt;/li&gt;
+            &lt;li&gt;Detailed, itemized quote&lt;/li&gt;
+            &lt;li&gt;No obligation to proceed&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `;
+    
+    revealContainer.innerHTML = '';
+  }
+}
+
+function getEstimateDescription() {
+  if (state.area &gt; 0) {
+    if (state.propertyType === 'Garage Conversion') {
+      return `We've calculated your estimate based on ${state.extensionType} (${state.area.toFixed(1)} sqm) in ${state.region}`;
+    } else if (state.propertyType === 'Outbuilding / Garden House / Annex') {
+      let description = `We've calculated your estimate based on ${state.extensionType} (${state.area.toFixed(1)} sqm) in ${state.region}`;
+      if (state.extensionType === 'To live in (i.e. bedroom, granny annexe)') {
+        description += state.hasBathroom ? ' (with toilet/bathroom)' : ' (no toilet/bathroom)';
+      }
+      return description;
+    } else {
+      return `We've calculated your estimate based on ${state.area.toFixed(1)} sqm in ${state.region}`;
+    }
+  }
+  return `We've calculated your estimate based on your selections in ${state.region}`;
+}
+
+function getEstimateDetails() {
+  if (state.propertyType === 'Extension' &amp;&amp; state.extensionType &amp;&amp; state.area &gt; 0) {
+    const pricePerSqm = getPrice(state.extensionType, 'extension');
+    return `Based on ${state.area.toFixed(1)} sqm × £${pricePerSqm.toLocaleString()}/sqm (${state.region})`;
+  } else if (state.propertyType === 'Loft Conversion' &amp;&amp; state.extensionType &amp;&amp; state.area &gt; 0) {
+    const pricePerSqm = getPrice(state.extensionType, 'loft');
+    return `Based on ${state.area.toFixed(1)} sqm × £${pricePerSqm.toLocaleString()}/sqm (${state.region})`;
+  } else if (state.propertyType === 'Garage Conversion' &amp;&amp; state.area &gt; 0) {
+    const pricePerSqm = getPrice(state.extensionType, 'garage');
+    return `Based on ${state.extensionType} (${state.area.toFixed(1)} sqm) × £${pricePerSqm.toLocaleString()}/sqm (${state.region})`;
+  } else if (state.propertyType === 'Outbuilding / Garden House / Annex' &amp;&amp; state.area &gt; 0) {
+    const pricePerSqm = getPrice(state.extensionType, 'outbuilding');
+    return `Based on ${state.extensionType} (${state.area.toFixed(1)} sqm) × £${pricePerSqm.toLocaleString()}/sqm (${state.region})`;
+  }
+  return `Based on your selections in ${state.region}`;
+}
+
+function revealEstimate() {
+  state.estimateRevealed = true;
+  updateEstimate();
+  
+  const revealBtn = document.querySelector('.reveal-btn');
+  if (revealBtn) {
+    revealBtn.innerHTML = '🎉 Estimate Revealed!';
+    revealBtn.style.background = '#10b981';
+    revealBtn.disabled = true;
+    
+    const confetti = document.createElement('div');
+    confetti.innerHTML = `
+      &lt;style&gt;
+        @keyframes confetti-fall {
+          0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
+        }
+        .confetti {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: #7c3aed;
+          animation: confetti-fall 1s ease-out forwards;
+          border-radius: 50%;
+        }
+      &lt;/style&gt;
+    `;
+    document.head.appendChild(confetti);
+    
+    for (let i = 0; i &lt; 20; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti';
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.background = ['#7c3aed', '#10b981', '#3b82f6', '#f59e0b'][Math.floor(Math.random() * 4)];
+      piece.style.animationDelay = Math.random() * 0.5 + 's';
+      document.body.appendChild(piece);
+      
+      setTimeout(() =&gt; piece.remove(), 1500);
+    }
+  }
+}
+
+// New function for time slot selection
+function selectTimeSlot(el, timeSlot) {
+  document.querySelectorAll('.time-btn').forEach(b =&gt; b.classList.remove('selected'));
+  el.classList.add('selected');
+  state.preferredTime = timeSlot;
+}
+
+function validateStep3() {
+  // All fields are now optional except terms and conditions
+  const btn = document.getElementById('step3Btn');
+  btn.disabled = !document.getElementById('terms').checked;
+}
+
+// Add event listeners for contact fields
+['firstname','lastname','email','phone','propertyAddress'].forEach(id =&gt; {
+  document.getElementById(id).addEventListener('input', validateStep3);
+});
+
+function submitCompleteForm() {
+  const formData = {
+    ...state,
+    firstname: document.getElementById('firstname').value.trim(),
+    lastname: document.getElementById('lastname').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    propertyAddress: document.getElementById('propertyAddress').value.trim(),
+    terms: document.getElementById('terms').checked,
+    estimate: state.estimate,
+    area: state.area,
+    knowsSize: state.knowsSize,
+    isLondon: isLondonRegion(),
+    estimateRevealed: state.estimateRevealed,
+    hasBathroom: state.hasBathroom
+  };
+
+  const form = new FormData();
+  form.append('Property_Type', formData.property);
+  form.append('Project_Type', formData.extensionType || formData.extensions.join(', '));
+  form.append('Property_Building_Type', formData.propertyBuildingType || 'Not specified');
+  form.append('Bedrooms', formData.bedrooms || 'Not specified');
+  form.append('Region', formData.region || 'Not specified');
+  form.append('Property_Descriptions', formData.propertyDescriptions.join(', ') || 'None');
+  form.append('Ownership', formData.ownership || 'Not specified');
+  form.append('Timeline', formData.timeline || 'Not specified');
+  
+  if (formData.propertyType === 'Outbuilding / Garden House / Annex' &amp;&amp; formData.extensionType === 'To live in (i.e. bedroom, granny annexe)') {
+    form.append('With_Bathroom', formData.hasBathroom ? 'Yes' : 'No');
+  }
+  
+  form.append('Knows_Size', formData.knowsSize ? 'Yes' : 'No');
+  form.append('Size_Area', formData.area ? `${formData.area} sqm` : 'Not provided');
+  form.append('Is_London', formData.isLondon ? 'Yes' : 'No');
+  form.append('Estimate_Revealed', formData.estimateRevealed ? 'Yes' : 'No');
+  
+  // Contact information
+  form.append('First_Name', formData.firstname || 'Not provided');
+  form.append('Last_Name', formData.lastname || 'Not provided');
+  form.append('Email', formData.email || 'Not provided');
+  form.append('Phone', formData.phone || 'Not provided');
+  form.append('Property_Address', formData.propertyAddress || 'Not provided');
+  form.append('Preferred_Contact_Time', formData.preferredTime || 'Not specified');
+  
+  if (formData.estimate &gt; 0) {
+    form.append('Estimated_Cost', `£${Math.round(formData.estimate).toLocaleString()}`);
+    form.append('_subject', `New Quote Request - £${Math.round(formData.estimate).toLocaleString()} Estimate (${formData.region})`);
+  } else {
+    form.append('Estimated_Cost', 'Estimate requires site survey');
+    form.append('_subject', `New Quote Request - Site Survey Required (${formData.region})`);
+  }
+  
+  form.append('_template', 'table');
+  form.append('_captcha', 'false');
+
+  const btn = document.getElementById('step3Btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  fetch('https://formsubmit.co/YOUR_EMAIL_HERE', {
+    method: 'POST',
+    body: form
+  })
+  .then(response =&gt; {
+    if (response.ok) {
+      document.getElementById('step3').classList.remove('active');
+      document.getElementById('success').classList.add('active');
+      window.scrollTo(0, 0);
+      console.log('Form submitted successfully:', formData);
+    } else {
+      throw new Error('Submission failed');
+    }
+  })
+  .catch(error =&gt; {
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('success').classList.add('active');
+    window.scrollTo(0, 0);
+    console.log('Form data collected:', formData);
+  });
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+
+<script>
+(function () {
+  var ORIG = 'YOUR_EMAIL_HERE';
+  var src = document.getElementById('src').value;
+  var view = document.getElementById('code-view');
+  var emailIn = document.getElementById('emailIn');
+  var hint = document.getElementById('emailHint');
+  var copyBtn = document.getElementById('copyBtn');
+  var copyMsg = document.getElementById('copyMsg');
+  var frame = document.getElementById('frame');
+  var current = src; var emailOk = false;
+  var DEFAULT_HINT = hint.textContent;
+
+  function render() {
+    var v = emailIn.value.trim();
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    emailOk = ok; current = ok ? src.split(ORIG).join(v) : src;
+    view.value = current;
+    hint.textContent = ok ? 'Done. Quote requests will be sent to ' + v + '.' : DEFAULT_HINT;
+  }
+  emailIn.addEventListener('input', render);
+  render();
+
+  copyBtn.addEventListener('click', function () {
+    function done() {
+      copyMsg.textContent = emailOk ? 'Copied! Now paste it into Wix.' : 'Copied, but your email is not in it yet. Type it above and copy again.';
+      setTimeout(function () { copyMsg.textContent = ''; }, 4000);
+    }
+    function fallback() {
+      view.focus(); view.select();
+      try { if (document.execCommand('copy')) { done(); return; } } catch (e) {}
+      copyMsg.textContent = 'All selected. Press Ctrl+C (Cmd+C on a Mac).';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(current).then(done, fallback);
+    } else { fallback(); }
+  });
+
+  var stub = '<script>window.fetch=function(){return Promise.resolve({ok:true})}<\/script>';
+  function loadPreview() { frame.srcdoc = src.replace(/<head>/i, '<head>' + stub); }
+  document.getElementById('restartBtn').addEventListener('click', loadPreview);
+  loadPreview();
+
+
+  var picImgs = document.querySelectorAll('img[data-pic]');
+  var fmtBtns = { png: document.getElementById('fmtPng'), svg: document.getElementById('fmtSvg') };
+  function setFmt(f) {
+    picImgs.forEach(function (im) { im.src = im.getAttribute('data-pic').replace('%s', f) + '.' + f; });
+    document.querySelectorAll('a[data-dl]').forEach(function (a) { a.href = a.getAttribute('data-dl').replace('%s', f) + '.' + f; a.textContent = 'Save ' + f.toUpperCase(); });
+    Object.keys(fmtBtns).forEach(function (k) { fmtBtns[k].setAttribute('aria-pressed', k === f ? 'true' : 'false'); });
+  }
+  fmtBtns.png.addEventListener('click', function () { setFmt('png'); });
+  fmtBtns.svg.addEventListener('click', function () { setFmt('svg'); });
+
+  var clock = document.getElementById('clock');
+  function tick() {
+    var d = new Date();
+    clock.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+  tick(); setInterval(tick, 30000);
+})();
+</script>
+
+</body>
+</html>
